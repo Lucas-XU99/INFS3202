@@ -51,7 +51,7 @@ async function getCurrentUser(req, res) {
       if (!user) {
         return res.status(400).json({ error: "User not found" });
       }
-      const resData = { id: user.id, username: user.username, email: user.email };
+      const resData = { id: user.id, username: user.username, email: user.email, avatar: user.avatar };
       res.status(200).json({ ...resData });
     })
     .catch((err) => {
