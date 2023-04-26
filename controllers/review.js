@@ -2,7 +2,7 @@ const { Review } = require("../models/index");
 
 function addReview(req, res) {
   const { content, answerId } = req.body;
-  Review.create({ content, userId: req.user.id, answerId })
+  Review.create({ content, userId: req.user.id, answerId,userId:req.user.id })
     .then(() => {
       res.status(200).json({ message: "success" });
     })

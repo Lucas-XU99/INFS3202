@@ -1,5 +1,5 @@
 const { Answer, Like, User, Review } = require("../models/index");
-const { Sequelize } = require("sequelize");
+const { Sequelize, where } = require("sequelize");
 
 async function addAnswer(req, res) {
   const { questionId, content } = req.body;
@@ -14,7 +14,9 @@ async function addAnswer(req, res) {
 
 async function likeAnswer(req, res) {
   const { answerId } = req.params;
-  const like = await Like.findOne({ userId: req.user.id });
+  console.log("answerId==", answerId);
+  const like = await Like.findOne({ where: { userId: req.user.id, answerId } });
+  console.log("like==", like);
   if (like) {
     return res.status(400).json({ error: "You already like it" });
   }
@@ -30,12 +32,13 @@ async function likeAnswer(req, res) {
 
 async function unLikeAnswer(req, res) {
   const { answerId } = req.params;
-  const like = await Like.findOne({ userId: req.user.id, answerId });
+  const like = await Like.findOne({ where: { userId: req.user.id, answerId } });
   if (!like) {
     return res.status(400).json({ error: "You already unlike it" });
   }
 
-  Like.destroy({ where: { userId: req.user.id } })
+  like
+    .destroy()
     .then(() => {
       res.status(200).json({ message: "success" });
     })
@@ -55,6 +58,12 @@ async function getAllAnswerByQuestion(req, res) {
       },
       {
         model: Review,
+        include: [
+          {
+            model: User,
+            attributes: ["id", "username"],
+          },
+        ],
       },
     ],
     attributes: {
@@ -66,14 +75,22 @@ async function getAllAnswerByQuestion(req, res) {
         )`),
           "like",
         ],
+        [
+          Sequelize.literal(`(
+          SELECT COUNT(*) FROM likes
+          WHERE likes.answerId = Answer.id
+        )`),
+          "likes",
+        ],
       ],
     },
-  }).then((answers) => {
-    res.status(200).json({ data: answers });
   })
-  .catch((err) => {
-    res.status(400).json({ error: err.message });
-  });
+    .then((answers) => {
+      res.status(200).json({ data: answers });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err.message });
+    });
 }
 
 async function pinAnswer(req, res) {
@@ -88,7 +105,6 @@ async function pinAnswer(req, res) {
       res.status(400).json({ message: err.message });
     });
 }
-
 
 async function unPinAnswer(req, res) {
   const { answerId } = req.params;
@@ -109,5 +125,5 @@ module.exports = {
   unLikeAnswer,
   getAllAnswerByQuestion,
   pinAnswer,
-  unPinAnswer
+  unPinAnswer,
 };
