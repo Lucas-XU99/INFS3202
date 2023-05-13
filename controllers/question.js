@@ -43,6 +43,26 @@ function searchQuestions(req, res) {
     });
 }
 
+function searchAutocomplte(req, res) {
+  const { keyword } = req.body;
+  if(!keyword){
+    return res.status(200).json({ data: [] });
+  }
+  Question.findAll({
+    where: {
+      content: {
+        [Op.like]: `%${keyword}%`,
+      },
+    },
+  })
+    .then((questions) => {
+      return res.status(200).json({ data: questions });
+    })
+    .catch((err) => {
+      return res.status(400).json({ error: err.message });
+    });
+}
+
 function getAllQuestionsByCourse(req, res) {
   const { courseId } = req.params;
   Question.findAll({
@@ -129,4 +149,5 @@ module.exports = {
   getQuestionById,
   getAllQuestionsByCourseAndCategory,
   searchQuestions,
+  searchAutocomplte
 };

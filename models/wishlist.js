@@ -1,12 +1,12 @@
 const sequelize = require("./config").sequelize;
 const { DataTypes } = require("sequelize");
 
-const Category = sequelize.define("category", {
-  categoryName: {
+
+const Wishlist = sequelize.define("wishlist", {
+  wishlistName: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
   },
 });
 
-module.exports = { Category };
+module.exports = { Wishlist };

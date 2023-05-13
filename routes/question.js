@@ -8,6 +8,8 @@ router.get("/course/:courseId", questionController.getAllQuestionsByCourse);
 router.get("/course/:courseId/category/:categoryId", questionController.getAllQuestionsByCourseAndCategory);
 router.get("/:questionId", questionController.getQuestionById);
 router.post("/search", questionController.searchQuestions);
+router.post("/autocomplete", questionController.searchAutocomplte);
+
 
 
 module.exports = router;

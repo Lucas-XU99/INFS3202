@@ -6,6 +6,8 @@ const { Question } = require("./question");
 const { User } = require("./users");
 const { Review } = require("./review");
 const { Like } = require("./like");
+const { Wishlist } = require("./wishlist");
+const { WishlistAnswer } = require("./WishlistAnswer");
 
 Course.belongsTo(User);
 
@@ -23,6 +25,12 @@ Review.belongsTo(User);
 Like.belongsTo(Answer);
 Like.belongsTo(User);
 
+Wishlist.belongsTo(User);
+
+WishlistAnswer.belongsTo(Wishlist);
+WishlistAnswer.belongsTo(Answer);
+
+
 (async () => {
   await sequelize.sync({});
 })();
@@ -34,4 +42,6 @@ module.exports = {
   User,
   Review,
   Like,
+  Wishlist,
+  WishlistAnswer,
 };

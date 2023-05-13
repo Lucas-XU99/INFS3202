@@ -10,6 +10,8 @@ const categoryRouter = require("./routes/category");
 const questionRouter = require("./routes/question");
 const answerRouter = require("./routes/answer");
 const reviewController = require("./routes/review");
+const wishlistController = require("./routes/wishlist");
+
 
 const cors = require("cors");
 
@@ -30,5 +32,7 @@ app.use("/api/category", categoryRouter);
 app.use("/api/question", questionRouter);
 app.use("/api/answer", answerRouter);
 app.use("/api/review", reviewController);
+app.use("/api/wishlist", wishlistController);
+
 
 module.exports = app;
