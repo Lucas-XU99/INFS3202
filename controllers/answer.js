@@ -82,6 +82,12 @@ async function getAllAnswerByQuestion(req, res) {
         )`),
           "likes",
         ],
+        [
+          Sequelize.literal(`(
+            SELECT CASE WHEN EXISTS (SELECT DISTINCT w.'id' FROM wishlists w WHERE w.'id' IN ( SELECT wa.'wishlistId' FROM wishlistAnswers wa WHERE wa.'answerId' = Answer.id) AND w.'userId' =   ${req.user.id}) THEN 1 ELSE 0 END AS collect
+        )`),
+          "collect",
+        ],
       ],
     },
   })
