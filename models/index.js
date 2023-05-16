@@ -7,7 +7,7 @@ const { User } = require("./users");
 const { Review } = require("./review");
 const { Like } = require("./like");
 const { Wishlist } = require("./wishlist");
-const { WishlistAnswer } = require("./WishlistAnswer");
+const { WishlistAnswer } = require("./wishlistAnswer");
 
 Course.belongsTo(User);
 
