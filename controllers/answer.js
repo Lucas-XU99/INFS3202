@@ -125,6 +125,40 @@ async function unPinAnswer(req, res) {
     });
 }
 
+async function getAllAnswers(req, res) {
+  Answer.findAll({
+    include: [
+      {
+        model: User,
+        attributes: ["id", "username"],
+      },
+    ],
+  })
+    .then((answers) => {
+      res.status(200).json({ data: answers });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err.message });
+    });
+}
+
+async function deleteAnswer(req, res) {
+  const { answerId } = req.params;
+  const answer = await Answer.findByPk(answerId);
+  if (!answer) {
+    return res.status(400).json({ error: "No this answer" });
+  }
+
+  answer
+    .destroy()
+    .then(() => {
+      res.status(200).json({ message: "success" });
+    })
+    .catch((err) => {
+      res.status(400).json({ error: err.message });
+    });
+}
+
 module.exports = {
   addAnswer,
   likeAnswer,
@@ -132,4 +166,6 @@ module.exports = {
   getAllAnswerByQuestion,
   pinAnswer,
   unPinAnswer,
+  getAllAnswers,
+  deleteAnswer,
 };
