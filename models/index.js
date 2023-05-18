@@ -9,6 +9,7 @@ const { Like } = require("./like");
 const { Wishlist } = require("./wishlist");
 const { WishlistAnswer } = require("./wishlistAnswer");
 
+
 Course.belongsTo(User);
 
 Answer.belongsTo(User);
