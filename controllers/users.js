@@ -110,7 +110,7 @@ async function sendResetCode(req, res) {
         sender: "lucasxxx9896@gmail.com",
         to: email,
         subject: "Reset your password",
-        text: `Please click the following link\n\n${process.env.base_url}/callback?token=${token}`,
+        text: `Please click the following link\n\n${process.env.BASE_URL}/callback?token=${token}`,
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
